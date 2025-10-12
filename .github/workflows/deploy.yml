@@ -49,7 +49,7 @@ jobs:
       # 打包静态文件
       - name: Run Script
         env:
-          APP_BASE_PATH: /maomao1996/mm-notes
+          APP_BASE_PATH: /maskcao/nav-notes
         run: pnpm install && pnpm run build
 
       - name: Copy files
@@ -62,7 +62,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           commit-message: Deploying to gh-pages from @ ${{ github.sha }} 🚀
           # 指定仓库
-          repository-name: maomao1996/mm-notes
+          repository-name: maskcao/nav-notes
           # GitHub Pages 读取的分支
           branch: gh-pages
           # 静态文件所在目录
