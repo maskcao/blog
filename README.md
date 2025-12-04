@@ -10,20 +10,19 @@ I'm a creator based in **Zhuhai, Guangdong**, focusing on Videography, Design, a
 
 *   **Videography** (Extensive Portfolio)
 *   **Graphic & UI** (Main Focus & Passion)
-*   **Development** (Vibe Coder)
+*   **Development** (Vibe Builder)
 *   **Cooking** (Still Learning...)
 
 ## 🛠️ Tech Stack & Tools
 
-*   **Design**: Figma, Adobe Creative Suite
-*   **Dev**: React, TypeScript, Tailwind CSS, Vite
-*   **Video**: DaVinci Resolve, Premiere Pro
+*   **Design**: Figma & AI Tools
+*   **Dev**: Trae & Google AI Studio
+*   **Video**: DaVinci Resolve, CapCut(No charge plz)
 
 ## 📫 Connect with Me
 
-*   **Email**: [lun3cy@126.com](mailto:lun3cy@126.com)
-*   **WeChat Official**: LuN3cy的实验房
-*   **Xiaohongshu**: LuN3cy
+*   **WeChat Official/公众号**: LuN3cy的实验房
+*   **RED/小红书**: LuN3cy
 *   **Bilibili**: [LuN3cy](https://space.bilibili.com/13573186)
 *   **500px**: [LuN3cy](https://500px.com.cn/LuN3cy)
 
