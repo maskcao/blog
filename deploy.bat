@@ -34,7 +34,25 @@ if %errorlevel% neq 0 (
 
 echo.
 echo 4. Pushing to GitHub...
+:: Increase buffer size to handle larger pushes and prevent timeouts
+git config http.postBuffer 524288000
+
+:push_retry
 git push origin main
+
+if %errorlevel% neq 0 (
+    echo.
+    echo [ERROR] Push failed! Connection might be unstable.
+    echo.
+    set /p retry="Do you want to retry? (y/n): "
+    if /i "%retry%"=="y" goto push_retry
+    
+    echo.
+    echo Tip: If you are using a VPN, make sure it's ON.
+    echo If you are NOT using a VPN, you might need one to access GitHub.
+    pause
+    exit /b
+)
 
 echo.
 echo ========================================================
