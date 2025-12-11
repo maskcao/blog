@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { EDUCATION_DATA } from '../src/data/education';
-import { Language } from '../types';
+import { Language, Experience, HonorsData } from '../types';
 import { ArrowUpRight, X, Hourglass } from 'lucide-react';
 
 interface TimelineSectionProps {
@@ -11,8 +11,8 @@ interface TimelineSectionProps {
 
 export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) => {
   const content = EDUCATION_DATA[language];
-  const experiences = content.experiences;
-  const honors = content.honors;
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [honors, setHonors] = useState<HonorsData | null>(null);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,10 +52,41 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) =>
     }
   }, [isModalOpen]);
 
+  const base64ToBytes = (b64: string) => Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const deriveKey = async (password: string, saltB64: string) => {
+    const enc = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+    const salt = base64ToBytes(saltB64);
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+  };
+  const decryptPayload = async (answer: string) => {
+    try {
+      const res = await fetch('/secure/education.enc.json', { cache: 'no-store' });
+      if (!res.ok) return;
+      const payload = await res.json();
+      const key = await deriveKey(answer, payload.salt);
+      const iv = base64ToBytes(payload.iv);
+      const ct = base64ToBytes(payload.ct);
+      const buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+      const text = new TextDecoder().decode(buf);
+      const data = JSON.parse(text);
+      const localeData = data[language] ?? data;
+      setExperiences(Array.isArray(localeData.experiences) ? localeData.experiences : []);
+      setHonors(localeData.honors || { scholarships: [], titles: [], competitions: [] });
+    } catch {}
+  };
+
   const handleUnlockSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputAnswer.trim() === '康') {
       setIsSuccess(true);
+      decryptPayload(inputAnswer.trim());
       // 1. Show Green Success State
       setTimeout(() => {
         setIsExploding(true);
@@ -173,6 +204,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) =>
                {language === 'zh' ? '答案错误' : 'Incorrect Answer'}
              </p>
            )}
+           <p className="mt-6 text-sm font-bold text-gray-400 animate-pulse">可以在联系页面点击公众号联系我 ;-)</p>
         </div>
       </div>
     );
@@ -302,7 +334,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) =>
                         {content.scholarshipsLabel}
                       </h3>
                       <ul className="space-y-3 md:space-y-4">
-                        {honors.scholarships.map((item, idx) => (
+                        {(honors?.scholarships || []).map((item, idx) => (
                           <li key={idx} className="text-base md:text-xl font-medium text-gray-600 dark:text-gray-300 leading-normal">
                             <span className="inline-block w-2 h-2 rounded-full bg-black dark:bg-white mr-3 align-middle"></span>
                             {item}
@@ -317,7 +349,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) =>
                         {content.titlesLabel}
                       </h3>
                       <ul className="space-y-3 md:space-y-4">
-                        {honors.titles.map((item, idx) => (
+                        {(honors?.titles || []).map((item, idx) => (
                           <li key={idx} className="text-base md:text-xl font-medium text-gray-600 dark:text-gray-300 leading-normal">
                              <span className="inline-block w-2 h-2 rounded-full bg-black dark:bg-white mr-3 align-middle"></span>
                              {item}
@@ -334,7 +366,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) =>
                     </h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t-2 border-gray-200 dark:border-gray-700 pt-8 md:pt-12">
-                      {honors.competitions.map((group, idx) => (
+                      {(honors?.competitions || []).map((group, idx) => (
                         <div key={idx} className="space-y-6">
                            <h4 className="text-lg md:text-2xl font-bold text-black dark:text-white opacity-90 mb-4">
                              {group.level}
@@ -344,15 +376,15 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) =>
                                const { rank, contest } = parseAward(award);
                                return (
                                  <div key={aIdx} className="flex flex-col items-start gap-1 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                                   {rank && (
-                                     <span className="bg-black dark:bg-white text-white dark:text-black text-xs md:text-sm font-bold px-2 py-1 rounded-md uppercase tracking-wide">
-                                       {rank}
-                                     </span>
-                                   )}
-                                   <span className="text-base md:text-lg font-bold text-gray-700 dark:text-gray-200 leading-tight">
-                                      {contest}
-                                   </span>
-                                 </div>
+                                    {rank && (
+                                      <span className="bg-black dark:bg-white text-white dark:text-black text-xs md:text-sm font-bold px-2 py-1 rounded-md uppercase tracking-wide">
+                                        {rank}
+                                      </span>
+                                    )}
+                                    <span className="text-base md:text-lg font-bold text-gray-700 dark:text-gray-200 leading-tight">
+                                       {contest}
+                                    </span>
+                                  </div>
                                );
                              })}
                            </div>
@@ -363,9 +395,9 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ language }) =>
                </div>
              </div>
            </div>
-        </div>,
-        document.body
-      )}
+         </div>,
+         document.body
+       )}
 
     </div>
   );
