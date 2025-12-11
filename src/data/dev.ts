@@ -52,5 +52,31 @@ export const DEV_DATA: Project[] = [
       tags: ['React', 'Tailwind CSS', 'Tool'],
       roleDetail: "Independently completed frontend interface design and function implementation."
     }
+  },
+  {
+    id: 'dev3',
+    common: {
+      category: 'Development',
+      image: '', // Placeholder
+      icon: 'file-text',
+      websiteUrl: 'https://lun3cy.github.io/Md2Design/',
+      githubUrl: 'https://github.com/LuN3cy/Md2Design'
+    },
+    zh: {
+      title: 'Md2Design',
+      subtitle: 'React 19 / Tailwind v4',
+      description: '将 Markdown 内容快速转换为适合社媒宣发的美观卡片。支持自动分页、浮动图层、自定义字体与样式，以及一键导出 PNG/JPG。',
+      role: 'vibe builder',
+      tags: ['React 19', 'Tailwind v4', 'Framer Motion', 'Zustand', '工具'],
+      roleDetail: "基于 Gemini 3 Pro 与 Trae IDE 开发。"
+    },
+    en: {
+      title: 'Md2Design',
+      subtitle: 'React 19 / Tailwind v4',
+      description: 'Quickly turn plain Markdown into beautifully styled cards for social media promotion. Supports auto pagination, floating layers, custom fonts, and one-click export.',
+      role: 'vibe builder',
+      tags: ['React 19', 'Tailwind v4', 'Framer Motion', 'Zustand', 'Tool'],
+      roleDetail: "Developed with Gemini 3 Pro & Trae IDE."
+    }
   }
 ];
