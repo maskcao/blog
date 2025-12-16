@@ -6,6 +6,7 @@ import { HeroSection } from './components/HeroSection';
 import { PortfolioSection } from './components/PortfolioSection';
 import { ArticleSection } from './components/ArticleSection';
 import { TimelineSection } from './components/TimelineSection';
+import { MusicPlayer } from './components/MusicPlayer';
 import { Mail, MapPin, RotateCcw, MessageSquare, Instagram, Youtube, FileText, Aperture, Github } from 'lucide-react';
 import { NAV_ITEMS } from './src/data/navigation';
 import { CONTACT_DATA } from './src/data/contact';
@@ -43,10 +44,10 @@ function App() {
   const scrollPositionRef = useRef<number>(0);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } 
+    // Automatic theme based on time: 19:00 - 06:00 is dark mode
+    const hour = new Date().getHours();
+    const isDarkTime = hour >= 19 || hour < 6;
+    setTheme(isDarkTime ? 'dark' : 'light');
   }, []);
 
   useEffect(() => {
@@ -87,8 +88,8 @@ function App() {
     if (!engineRef.current) return;
     const engine = engineRef.current;
     
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
+    const mouseX = event.clientX + window.scrollX;
+    const mouseY = event.clientY + window.scrollY;
     
     const bodies = Matter.Composite.allBodies(engine.world);
     
@@ -657,6 +658,7 @@ function App() {
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white font-sans selection:bg-black dark:selection:bg-white selection:text-white dark:selection:text-black overflow-x-hidden transition-colors duration-300">
       
+      <MusicPlayer />
       {/* Dynamic Navigation */}
       <Sidebar 
         activeTab={activeTab} 

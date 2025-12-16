@@ -40,17 +40,17 @@ export const DEV_DATA: Project[] = [
       title: '工牌生成器',
       subtitle: 'React / Tailwind',
       description: '具有设计感的自定义工牌生成应用。',
-      role: '前端开发',
-      tags: ['React', 'Tailwind CSS', '工具'],
-      roleDetail: "独立完成前端界面设计与功能实现。"
+      role: 'vibe builder',
+      tags: ['React', 'Tailwind CSS'],
+      roleDetail: "You`re absolutely RIGHT!"
     },
     en: {
       title: 'LUNA-Badge Generator',
       subtitle: 'React / Tailwind',
       description: 'A designer badge generator application with custom styles.',
-      role: 'Frontend Developer',
-      tags: ['React', 'Tailwind CSS', 'Tool'],
-      roleDetail: "Independently completed frontend interface design and function implementation."
+      role: 'vibe builder',
+      tags: ['React', 'Tailwind CSS'],
+      roleDetail: "You`re absolutely RIGHT!"
     }
   },
   {
@@ -77,6 +77,32 @@ export const DEV_DATA: Project[] = [
       role: 'vibe builder',
       tags: ['React 19', 'Tailwind v4', 'Framer Motion', 'Zustand', 'Tool'],
       roleDetail: "Developed with Gemini 3 Pro & Trae IDE."
+    }
+  },
+  {
+    id: 'dev4',
+    common: {
+      category: 'Development',
+      image: '', // Placeholder
+      icon: 'film',
+      websiteUrl: 'https://lun3cy.github.io/CineViz/',
+      githubUrl: 'https://github.com/LuN3cy/CineViz'
+    },
+    zh: {
+      title: 'CineViz',
+      subtitle: 'React / Tailwind',
+      description: '基于计量电影学的视频节奏与视觉分析工具。',
+      role: 'vibe builder',
+      tags: ['React', 'Tailwind CSS', 'TypeScript'],
+      roleDetail: "请理解我的意思，再生成一次，不要修改前面的代码"
+    },
+    en: {
+      title: 'CineViz',
+      subtitle: 'React / Tailwind',
+      description: 'A video rhythm and visual analysis tool based on movie theory.',
+      role: 'vibe builder',
+      tags: ['React', 'Tailwind CSS', 'TypeScript'],
+      roleDetail: "Please understand my meaning, and generate it again. Do not modify the code before."
     }
   }
 ];

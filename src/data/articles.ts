@@ -302,6 +302,21 @@ export const ARTICLE_DATA = [
       title: 'Md2Design: A Simple and Beautiful Markdown to Graphic Card Generator',
     }
   },
+    {
+    id: 'a19',
+    common: {
+      category: ArticleCategory.DIT,
+      link: 'https://mp.weixin.qq.com/s/qRjivgmGlfHTd_8oPDC2uw',
+      coverImage: 'https://mmbiz.qpic.cn/mmbiz_png/MpZIibj0bjSxnnQHXMNJtLGXcS9E1xYiaBOCicSr6UxQtfaTY3Dp9grqoXpmdibrK4bzh3bRo7dicB3J34ZhXZ0ZIlw/640?wx_fmt=png&from=appmsg&tp=wxpic&wxfrom=5&wx_lazy=1#imgIndex=0',
+      date: '2025-12-16'
+    },
+    zh: {
+      title: '个人周报 | 25/12/08~25/12/14',
+    },
+    en: {
+      title: 'Weekly Report | 25/12/08~25/12/14',
+    }
+  },
   {
     id: 'l1',
     common: {
