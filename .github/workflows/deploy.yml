@@ -6,34 +6,36 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read  # 仅读取当前仓库（Blogsite）的代码
+  contents: read  # 仅读取当前仓库（Blogsite）代码
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. 拉取当前仓库（Blogsite）的代码
+      # 1. 拉取当前仓库代码
       - uses: actions/checkout@v4
 
-      # 2. 构建项目（根据你的框架调整构建命令，这里以 Vite 为例）
+      # 2. 构建项目（以 Vite 为例，其他框架参考之前的配置调整）
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
       - run: npm install
-      - run: npm run build -- --outDir dist/blog  # 输出到 dist/blog（子目录）
+      - run: npm run build -- --outDir dist/blog  # 输出到 blog 子目录
 
-      # 3. 推送构建产物到 maskcao.github.io 仓库的 gh-pages 分支（或 main 分支）
+      # 3. 跨仓库部署到 maskcao.github.io（修正参数和认证方式）
       - name: Deploy to maskcao.github.io
-        uses: peaceiris/actions-gh-pages@v4  # 跨仓库部署的专用 Action
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          # 目标仓库：maskcao/maskcao.github.io
-          repo: maskcao/maskcao.github.io
-          # 访问令牌：用之前创建的 Secret
-          deploy_key: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
-          # 构建产物路径（当前仓库的 dist/blog 目录）
+          # 修正1：目标仓库用 external_repository（不是 repo）
+          external_repository: maskcao/maskcao.github.io
+          # 修正2：PAT 用 personal_token 参数（不是 deploy_key）
+          personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
+          # 构建产物路径（当前仓库的 dist/blog）
           publish_dir: ./dist/blog
-          # 推送到目标仓库的 gh-pages 分支（如果目标仓库用 main 分支作为 Pages 源，就改成 main）
+          # 目标仓库的 Pages 分支（根据你 maskcao.github.io 的设置调整，通常是 gh-pages 或 main）
           publish_branch: gh-pages
-          # 保持目标仓库的其他文件（比如你原来部署的根路径项目）
+          # 保留目标仓库原有文件（比如你之前部署的根路径项目）
           keep_files: true
+          # 可选：设置提交信息（方便区分部署记录）
+          commit_message: "Deploy Blogsite to blog subdir: ${{ github.sha }}"
