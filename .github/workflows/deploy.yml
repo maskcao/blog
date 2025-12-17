@@ -1,37 +1,47 @@
-name: Deploy Blog to maskcao.github.io/blog (main分支)
+# 1. workflow 的名称（在 Actions 面板显示的名称，可自定义）
+name: Deploy to GitHub Pages
 
+# 2. 触发 workflow 的条件（什么时候执行部署）
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ]  # ① 当代码推送到 main 分支时，自动触发
+  workflow_dispatch:     # ② 支持手动触发（在 Actions 面板点「Run workflow」）
 
+# 3. 权限配置（GitHub Actions 执行时需要的权限，必须正确配置否则部署失败）
 permissions:
-  contents: read  # 仅读取当前仓库（Blogsite）代码
+  contents: read        # 只读当前仓库的代码（不需要修改代码，所以只给读权限）
+  pages: write          # 允许写入 GitHub Pages 相关资源（必须）
+  id-token: write       # 允许生成身份令牌（用于 GitHub Pages 部署认证，必须）
 
+# 4. 并发控制（避免同时触发多个部署任务冲突）
+concurrency:
+  group: pages          # 给部署任务分组（组名是 pages）
+  cancel-in-progress: true  # 如果有正在执行的部署任务，新的任务会取消旧的（避免重复部署）
+
+# 5. 定义要执行的任务（jobs 是 workflow 的核心，这里有 2 个任务：build 构建、deploy 部署）
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  # 任务1：build（构建项目，生成可部署的静态文件）
+  build:
+    runs-on: ubuntu-latest  # 运行在 GitHub 提供的 Ubuntu 服务器上
+    steps:                  # 任务的具体步骤（按顺序执行）
+      - uses: actions/checkout@v4  # 步骤1：拉取当前仓库的代码到服务器
+      - uses: actions/setup-node@v4  # 步骤2：在服务器上安装 Node.js
+        with:
+          node-version: 20  # 指定 Node.js 版本为 20（和你本地开发版本一致）
+          cache: 'npm'      # 缓存 npm 依赖（下次构建更快，可选但推荐）
+      - run: npm install    # 步骤3：安装项目依赖（和你本地执行 npm install 一样）
+      - run: npm run build  # 步骤4：构建项目（执行你项目里的 build 脚本，生成静态文件）
+      - uses: actions/upload-pages-artifact@v3  # 步骤5：上传构建产物到 GitHub 临时存储
+        with:
+          path: ./dist      # 指明要上传的文件夹是 ./dist（前端项目构建后默认输出目录）
+
+  # 任务2：deploy（部署，把 build 任务上传的产物部署到 GitHub Pages）
+  deploy:
+    environment:           # 配置部署环境（GitHub 会记录这个环境的部署历史）
+      name: github-pages   # 环境名称（固定叫 github-pages，和 GitHub Pages 关联）
+      url: ${{ steps.deployment.outputs.page_url }}  # 部署后的访问地址（自动生成）
+    runs-on: ubuntu-latest  # 同样运行在 Ubuntu 服务器上
+    needs: build           # 依赖关系：必须等 build 任务成功完成后，才执行 deploy
     steps:
-      # 1. 拉取当前仓库（Blogsite）代码
-      - uses: actions/checkout@v4
-
-      # 2. 构建项目（以 Vite 为例，其他框架调整 build 命令）
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm install
-      - run: npm run build -- --outDir dist/blog  # 输出到 dist/blog 子目录
-
-      # 3. 推送到 maskcao.github.io 的 main 分支（核心修改）
-      - name: Deploy to maskcao.github.io (main分支)
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          external_repository: maskcao/maskcao.github.io
-          personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
-          publish_dir: ./dist/blog  # 本地构建产物目录（里面是 index.html 等文件）
-          destination_dir: blog     # 推送到目标仓库 main 分支的 blog 子目录
-          publish_branch: main      # 关键修改：推送至 main 分支（和 Pages 源一致）
-          keep_files: true          # 保留 main 分支原有文件（不覆盖根路径项目）
-          force_orphan: false       # 禁止创建孤立分支（避免删除 main 分支原有文件）
-          commit_message: "Deploy Blogsite to blog subdir: ${{ github.sha }}"
+      - id: deployment
+        uses: actions/deploy-pages@v4  # 官方部署 Action，把临时存储的产物部署到 Pages
