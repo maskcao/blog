@@ -15,22 +15,22 @@ jobs:
       # 1. 拉取当前仓库代码
       - uses: actions/checkout@v4
 
-      # 2. 构建项目（以 Vite 为例，其他框架参考之前的配置调整）
+      # 2. 构建项目（以 Vite 为例，其他框架需调整 build 命令）
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
       - run: npm install
-      - run: npm run build -- --outDir dist/blog  # 输出到 blog 子目录
+      - run: npm run build -- --outDir dist/blog  # 输出到 dist/blog 子目录（Vite 专用参数）
 
-      # 3. 跨仓库部署到 maskcao.github.io（修正参数和认证方式）
+      # 3. 跨仓库部署到 maskcao.github.io 的 blog 子目录
       - name: Deploy to maskcao.github.io
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        external_repository: maskcao/maskcao.github.io
-        personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
-        publish_dir: ./dist/blog  # 本地构建产物的目录（里面是 index.html 等文件）
-        destination_dir: blog     # 新增：推送到目标仓库的 blog 子目录
-        publish_branch: gh-pages
-        keep_files: true
-        commit_message: "Deploy Blogsite to blog subdir: ${{ github.sha }}"
+        uses: peaceiris/actions-gh-pages@v4  # 注意：这行要和上面的 - name 缩进一致（2个空格或4个空格，统一即可）
+        with:
+          external_repository: maskcao/maskcao.github.io
+          personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
+          publish_dir: ./dist/blog  # 本地构建产物目录（需包含 index.html）
+          destination_dir: blog     # 推送到目标仓库的 blog 子目录（核心修复）
+          publish_branch: gh-pages  # 目标仓库的 Pages 分支（确认和 maskcao.github.io 配置一致）
+          keep_files: true          # 保留目标仓库原有文件（不覆盖根路径项目）
+          commit_message: "Deploy Blogsite to blog subdir: ${{ github.sha }}"
