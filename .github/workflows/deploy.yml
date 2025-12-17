@@ -25,17 +25,12 @@ jobs:
 
       # 3. 跨仓库部署到 maskcao.github.io（修正参数和认证方式）
       - name: Deploy to maskcao.github.io
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          # 修正1：目标仓库用 external_repository（不是 repo）
-          external_repository: maskcao/maskcao.github.io
-          # 修正2：PAT 用 personal_token 参数（不是 deploy_key）
-          personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
-          # 构建产物路径（当前仓库的 dist/blog）
-          publish_dir: ./dist/blog
-          # 目标仓库的 Pages 分支（根据你 maskcao.github.io 的设置调整，通常是 gh-pages 或 main）
-          publish_branch: gh-pages
-          # 保留目标仓库原有文件（比如你之前部署的根路径项目）
-          keep_files: true
-          # 可选：设置提交信息（方便区分部署记录）
-          commit_message: "Deploy Blogsite to blog subdir: ${{ github.sha }}"
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        external_repository: maskcao/maskcao.github.io
+        personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
+        publish_dir: ./dist/blog  # 本地构建产物的目录（里面是 index.html 等文件）
+        destination_dir: blog     # 新增：推送到目标仓库的 blog 子目录
+        publish_branch: gh-pages
+        keep_files: true
+        commit_message: "Deploy Blogsite to blog subdir: ${{ github.sha }}"
