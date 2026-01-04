@@ -16,21 +16,17 @@ export interface HomeContent {
 export const HOME_DATA: Record<Language, HomeContent> = {
   zh: {
     heroItems: [
-      { text: "摄影摄像", annotation: "（作品积累较多）", category: Category.VIDEO },
-      { text: "平面交互", annotation: "（当前主攻，兴趣所在）", category: Category.DESIGN },
-      { text: "应用开发", annotation: "（vibe builder）", category: Category.DEV },
-      { text: "炒粉炒饭", annotation: "（还在学）", category: null }
+      { text: "网络安全", annotation: "（本职所在）", category: Category.VIDEO },
+      { text: "新媒体", annotation: "（兴趣所在）", category: Category.DESIGN }
     ],
-    intro: "不懂设计的摄影师不是一个好的产品经理。|边学边做，MVP生活，迈向全栈，但更看重实际价值。",
+    intro: "边学边做，MVP生活，坚持所好！",
     selectedWorks: "精选作品",
     years: "[ 2021 — 2025 ]"
   },
   en: {
     heroItems: [
-      { text: "Videography", annotation: "(Extensive Portfolio)", category: Category.VIDEO },
-      { text: "Graphic & UI", annotation: "(Main Focus & Passion)", category: Category.DESIGN },
-      { text: "Development", annotation: "(Vibe Coder)", category: Category.DEV },
-      { text: "Cooking", annotation: "(Still Learning)", category: null }
+      { text: "Network Security", annotation: "(My Job)", category: Category.VIDEO },
+      { text: "New Media", annotation: "(Interest)", category: Category.DESIGN }
     ],
     intro: "A photographer who doesn't understand design is not a good product manager. | Learning by doing, living the MVP life, aiming for full-stack, but valuing actual impact above all.",
     selectedWorks: "Selected Works",
