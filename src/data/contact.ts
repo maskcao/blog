@@ -28,7 +28,7 @@ export const CONTACT_DATA: Record<Language, ContactContent> = {
     contactLabel: "取得联系",
     emailMeLabel: "邮箱",
     email: "maskcao@126.com",
-    hello: "你好 ;-)",
+    hello: "你好 :)",
     intro: "欢迎探讨与合作。",
     socials: {
       wechat: "Maskcao的实验房",
