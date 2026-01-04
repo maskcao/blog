@@ -61,33 +61,5 @@ export const DESIGN_DATA: Project[] = [
       concept: "I constantly thought: what visual element best represents tourism? I found that road signs are key for people to perceive their environment. Referencing road sign designs from different regions, I designed a visual scheme tailored for a tourism channel.",
       roleDetail: "Logo design, auxiliary graphic development, and wayfinding system application."
     }
-  },
-  {
-    id: 'd3',
-    common: {
-      category: 'Graphics & UI',
-      image: 'https://www.figma.com/file/z3UFyuPdEXd6hjG9CN1Ax2/thumbnail?ver=thumbnails/21d64c42-da89-494b-82f1-f64107525fd6',
-      figmaUrl: 'https://www.figma.com/design/z3UFyuPdEXd6hjG9CN1Ax2/%E5%B9%B3%E9%9D%A2-%7C-%E6%9C%88%E5%85%89%E7%96%97%E5%85%BB%E9%99%A2?node-id=0-1&t=BQlZwjpSjHFDooFz-1'
-    },
-    zh: {
-      title: '月光疗养院',
-      subtitle: '信息可视化',
-      description: '关于青年睡眠不足（“熬夜”）的信息图表。2.5D 插画风格。',
-      role: '视觉设计师',
-      tags: ['信息图表', '2.5D', '数据'],
-      awards: ["中南赛区三等奖"],
-      concept: "起初我想采取扁平化的设计，但信息可视化如果都是扁平化，视觉表现跟数据便会风格重复，从而观众视觉疲劳。于是最后我采取了2.5D + 描边的方案，给作品增加了深度。使用低饱和互补色，红色作为强调色。",
-      roleDetail: "数据收集、文案梳理、插画绘制及排版。"
-    },
-    en: {
-      title: 'Moonlight Nursing',
-      subtitle: 'Information Visualization',
-      description: 'Infographic regarding youth sleep deprivation ("Staying up late"). 2.5D illustration style.',
-      role: 'Visual Designer',
-      tags: ['Infographic', '2.5D', 'Data'],
-      awards: ["3rd Prize (Central South Region)"],
-      concept: "Initially, I considered a flat design, but if data viz is too flat, it conflicts with the data itself visually. To avoid visual fatigue, I adopted a 2.5D + outline scheme to add depth, using low-saturation complementary colors with red as an accent.",
-      roleDetail: "Data collection, copywriting, illustration, and layout."
-    }
   }
 ];
